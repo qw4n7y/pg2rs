@@ -8,11 +8,19 @@ class Imports::TableTransfer < ApplicationRecord
   validates :table, presence: true
   validates :status, presence: true, inclusion: { in: Imports::TableTransfer.statuses.keys }
 
+  after_commit :update_transfer_status, on: :update
+
   def append_log(message)
     ActiveRecord::Base.connection.execute(%Q{
       UPDATE #{Imports::TableTransfer.table_name}
       SET log = COALESCE(log, '') || E#{ActiveRecord::Base.sanitize("[#{Time.now}] #{message}\n")}
       WHERE id = #{id}
     })
+  end
+
+  private
+
+  def update_transfer_status
+    transfer.update_status!
   end
 end
