@@ -1,0 +1,15 @@
+# SQLite version 3.x
+#   gem install sqlite3
+#
+#   Ensure the SQLite 3 gem is defined in your Gemfile
+#   gem 'sqlite3'
+#
+
+development:
+  adapter: postgresql
+  encoding: unicode
+  user: postgres
+  pool: 200
+  host: db
+  port: 5432
+  database: pg2rs

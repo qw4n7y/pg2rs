@@ -1,0 +1,7 @@
+.git
+log/**
+.git/**
+tmp/pids/*
+tmp/cache/*
+public/assets/**/*
+docker/**

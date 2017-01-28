@@ -1,0 +1,15 @@
+FROM phusion/passenger-ruby23
+
+# Install app dependencies
+RUN apt-get update && apt-get install -y nodejs postgresql-client imagemagick --no-install-recommends && rm -rf /var/lib/apt/lists/*
+
+# Install gems (Ruby2.3)
+WORKDIR /tmp
+ADD Gemfile Gemfile
+ADD Gemfile.lock Gemfile.lock
+RUN bundle install
+
+ADD . /home/app/pg2rs
+WORKDIR /home/app/pg2rs
+
+ENV RAILS_ENV development
