@@ -1,0 +1,7 @@
+<div class='nested-fields well well-sm'>
+  <%= f.input :name %>
+  <%= f.input :strategy, collection: Imports::Table.strategies.keys %>
+  <%= link_to_remove_association f, class: 'btn btn-default' do %>
+    <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+  <% end %>
+</div>

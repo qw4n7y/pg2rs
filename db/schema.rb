@@ -10,10 +10,49 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170128035414) do
+ActiveRecord::Schema.define(version: 20170128055620) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "imports_imports", force: :cascade do |t|
+    t.string   "title"
+    t.json     "redshift",   default: "{}", null: false
+    t.json     "postgres",   default: "{}", null: false
+    t.integer  "status",     default: 0,    null: false
+    t.datetime "created_at",                null: false
+    t.datetime "updated_at",                null: false
+  end
+
+  create_table "imports_table_transfers", force: :cascade do |t|
+    t.integer  "transfer_id", null: false
+    t.integer  "table_id",    null: false
+    t.text     "log"
+    t.integer  "status",      null: false
+    t.datetime "finished_at"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+    t.index ["table_id"], name: "index_imports_table_transfers_on_table_id", using: :btree
+    t.index ["transfer_id"], name: "index_imports_table_transfers_on_transfer_id", using: :btree
+  end
+
+  create_table "imports_tables", force: :cascade do |t|
+    t.integer  "import_id"
+    t.string   "name"
+    t.integer  "strategy",   null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["import_id"], name: "index_imports_tables_on_import_id", using: :btree
+  end
+
+  create_table "imports_transfers", force: :cascade do |t|
+    t.integer  "status",      null: false
+    t.datetime "finished_at"
+    t.integer  "import_id"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+    t.index ["import_id"], name: "index_imports_transfers_on_import_id", using: :btree
+  end
 
   create_table "users_users", force: :cascade do |t|
     t.string   "email",                  default: "", null: false

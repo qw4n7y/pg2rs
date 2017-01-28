@@ -1,0 +1,13 @@
+<h2>
+  Editing Import
+
+  <%= link_to @imports_import, class: 'pull-right btn btn-default' do %>
+    <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>
+  <% end %>
+  <%= link_to imports_imports_path, class: 'pull-right btn btn-default' do %>
+    <span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span>
+  <% end %>
+</h2>
+<hr/>
+
+<%= render 'form', imports_import: @imports_import %>

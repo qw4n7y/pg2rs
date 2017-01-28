@@ -1,0 +1,27 @@
+<%= simple_form_for(@imports_import) do |f| %>
+  <%= f.error_notification %>
+
+  <div class="form-inputs">
+    <%= f.input :title %>
+    <%= f.input :redshift, as: :text %>
+    <%= f.input :postgres, as: :text %>
+    <%= f.input :status, collection: Imports::Import.statuses.keys %>
+
+    <h3>Tables</h3>
+    <div id='tables'>
+      <%= f.simple_fields_for :tables do |table| %>
+        <%= render 'table_fields', f: table %>
+      <% end %>
+      <div class='links'>
+        <%= link_to_add_association f, :tables, class: 'btn btn-default' do %>
+          <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+        <% end %>
+      </div>
+    </div>
+    </br>
+  </div>
+
+  <div class="form-actions">
+    <%= f.button :submit %>
+  </div>
+<% end %>

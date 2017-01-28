@@ -28,3 +28,12 @@ services:
     links:
       - db
       - redis
+
+  sidekiq:
+    build:
+      context: .
+      dockerfile: docker/app/Dockerfile.development
+    command: 'bundle exec sidekiq'
+    links:
+      - db
+      - redis

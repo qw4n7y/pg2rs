@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  transfer: one
+  table: one
+  status: 1
+
+two:
+  transfer: two
+  table: two
+  status: 1
