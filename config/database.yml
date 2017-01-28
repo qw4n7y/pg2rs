@@ -13,3 +13,12 @@ development:
   host: db
   port: 5432
   database: pg2rs
+
+production:
+  adapter: postgresql
+  encoding: unicode
+  user: postgres
+  pool: 200
+  host: db
+  port: 5432
+  database: pg2rs

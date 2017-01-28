@@ -1,0 +1,41 @@
+FROM phusion/passenger-ruby23
+
+# Install app dependencies
+RUN apt-get update && apt-get install -y logrotate nodejs postgresql-client imagemagick --no-install-recommends && rm -rf /var/lib/apt/lists/*
+
+ENV RAILS_ENV production
+ENV PASSENGER_APP_ENV production
+
+# Install gems (Ruby2.3)
+WORKDIR /tmp
+ADD Gemfile Gemfile
+ADD Gemfile.lock Gemfile.lock
+RUN bundle install
+
+# Add the nginx site and config
+ADD docker/app/pg2rs.conf /etc/nginx/sites-enabled/pg2rs.conf
+ADD docker/app/passenger_app_env.conf /etc/nginx/main.d/passenger_app_env.conf
+ADD docker/app/passenger.conf /etc/nginx/conf.d/passenger.conf
+
+# Logrotate
+ADD docker/app/logrotate-pg2rs.conf /etc/logrotate.d/pg2rs
+
+# fix /etc/logrotate.conf (wrong group definition)
+RUN sed "s/su root syslog/su root root/g" /etc/logrotate.conf > /etc/logrotate.conf.fixed
+RUN mv /etc/logrotate.conf.fixed /etc/logrotate.conf
+RUN cp /etc/cron.daily/logrotate /etc/cron.hourly/
+
+# Remove the default site
+RUN rm /etc/nginx/sites-enabled/default
+
+ADD . /home/app/pg2rs
+WORKDIR /home/app/pg2rs
+
+RUN bundle exec rake assets:precompile
+
+RUN mkdir -p log
+RUN mkdir -p tmp
+RUN chown -R app:app *
+
+# Start Nginx / Passenger
+RUN rm -f /etc/service/nginx/down
