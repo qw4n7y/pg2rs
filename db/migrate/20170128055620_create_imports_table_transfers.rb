@@ -4,7 +4,6 @@ class CreateImportsTableTransfers < ActiveRecord::Migration[5.0]
       t.references :transfer, null: false
       t.references :table, null: false
 
-      t.text :log
       t.integer :status, null: false
       t.timestamp :finished_at
 

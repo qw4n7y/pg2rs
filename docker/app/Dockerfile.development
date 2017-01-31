@@ -12,4 +12,7 @@ RUN bundle install
 ADD . /home/app/pg2rs
 WORKDIR /home/app/pg2rs
 
+# Copy business-sensitive files from secure git submodule folder
+# RUN cp -R -f ./docker/vault/* ./
+
 ENV RAILS_ENV development

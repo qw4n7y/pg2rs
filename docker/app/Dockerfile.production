@@ -31,6 +31,9 @@ RUN rm /etc/nginx/sites-enabled/default
 ADD . /home/app/pg2rs
 WORKDIR /home/app/pg2rs
 
+# Copy business-sensitive files from secure git submodule folder
+# RUN cp -R -f ./docker/vault/* ./
+
 RUN bundle exec rake assets:precompile
 
 RUN mkdir -p log

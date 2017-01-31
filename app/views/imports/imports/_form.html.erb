@@ -3,8 +3,9 @@
 
   <div class="form-inputs">
     <%= f.input :title %>
-    <%= f.input :redshift, as: :text, input_html: {value: JSON.generate(f.object.redshift)} %>
-    <%= f.input :postgres, as: :text, input_html: {value: JSON.generate(f.object.postgres)}, hint: 'e.g {"host":"127.0.0.1", "db": {"user": "postgres", "password":"superpass123", "name":"my_db", "port": 5432}, "ssh": {"user": "SSH USER TO LOGIN", "private_key": "SSH private key in PEM format", "port": 22, "passphrase": "Key passpharase", "password": "SSH password (if no private key provided)"}}' %>
+    <%= f.input :postgres, as: :text, input_html: {value: JSON.generate(f.object.postgres)}, hint: 'e.g {"host": "127.0.0.1", "user": "postgres", "password":"superpass123", "name":"my_db", "port": 5432}' %>
+    <%= f.input :s3, as: :text, input_html: {value: JSON.generate(f.object.s3)}, hint: 'e.g {"access_key_id": "123456", "secret_access_key": "ZXCVBN", "bucket": "my-bucket-name", "region": "us-east-1"}' %>
+    <%= f.input :redshift, as: :text, input_html: {value: JSON.generate(f.object.redshift)}, hint: 'e.g {}' %>
     <%= f.input :status, collection: Imports::Import.statuses.keys %>
 
     <h3>Tables</h3>

@@ -14,7 +14,7 @@ class Imports::ImportsController < ApplicationController
 
   # GET /imports/imports/new
   def new
-    @imports_import = Imports::Import.new
+    @imports_import = Imports::Import.new(postgres: {}, s3: {}, redshift: {})
   end
 
   # GET /imports/imports/1/edit
@@ -70,11 +70,12 @@ class Imports::ImportsController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def imports_import_params
       attrs = params.require(:imports_import).permit(
-                :title, :redshift, :postgres, :status, :private_ssh_key_to_postgres_server,
+                :title, :redshift, :postgres, :s3, :status, :private_ssh_key_to_postgres_server,
                 tables_attributes: [:id, :name, :strategy, :_destroy])
 
       attrs[:redshift] = JSON.parse(attrs[:redshift] || '{}')
       attrs[:postgres] = JSON.parse(attrs[:postgres] || '{}')
+      attrs[:s3] = JSON.parse(attrs[:s3] || '{}')
 
       attrs
     end

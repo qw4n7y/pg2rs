@@ -36,24 +36,20 @@
 
   <tbody>
     <% @transfer.table_transfers.each do |table_transfer| %>
-      <% log_div_id = "#{dom_id(table_transfer)}-log" %>
-
       <tr>
         <td><%= table_transfer.table.name %></td>
         <td><%= table_transfer.created_at %></td>
         <td><%= table_transfer.finished_at %></td>
         <td><%= table_transfer.status %></td>
         <td>
-          <%= link_to '#', class: 'btn btn-xs btn-default', onclick: "$('##{log_div_id}').toggleClass('hidden'); return false;" do %>
+          <%= link_to '#', class: 'btn btn-xs btn-default' do %>
             <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>
           <% end %>
-        </td>
-      </tr>
-      <tr class='hidden' id='<%= log_div_id %>'>
-        <td colspan="5">
-          <pre><%= raw table_transfer.log %></pre>
         </td>
       </tr>
     <% end %>
   </tbody>
 </table>
+
+<h3>Log</h3>
+<pre><%= raw @transfer.log %></pre>

@@ -17,8 +17,9 @@ ActiveRecord::Schema.define(version: 20170128055620) do
 
   create_table "imports_imports", force: :cascade do |t|
     t.string   "title"
-    t.json     "redshift",   default: "{}", null: false
+    t.json     "s3",         default: "{}", null: false
     t.json     "postgres",   default: "{}", null: false
+    t.json     "redshift",   default: "{}", null: false
     t.integer  "status",     default: 0,    null: false
     t.datetime "created_at",                null: false
     t.datetime "updated_at",                null: false
@@ -27,7 +28,6 @@ ActiveRecord::Schema.define(version: 20170128055620) do
   create_table "imports_table_transfers", force: :cascade do |t|
     t.integer  "transfer_id", null: false
     t.integer  "table_id",    null: false
-    t.text     "log"
     t.integer  "status",      null: false
     t.datetime "finished_at"
     t.datetime "created_at",  null: false
@@ -49,6 +49,7 @@ ActiveRecord::Schema.define(version: 20170128055620) do
     t.integer  "status",      null: false
     t.datetime "finished_at"
     t.integer  "import_id"
+    t.text     "log"
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
     t.index ["import_id"], name: "index_imports_transfers_on_import_id", using: :btree
