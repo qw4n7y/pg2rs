@@ -11,6 +11,7 @@ class Import::DoTransfer
   def perform
     log "Starting"
     @transfer.started!
+    @transfer.update_attributes!(created_at: Time.now)
 
     log "Preparing"
     prepare

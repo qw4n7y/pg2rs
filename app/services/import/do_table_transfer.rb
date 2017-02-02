@@ -14,6 +14,8 @@ class Import::DoTableTransfer
 
     log "Preparing"
     @table_transfer.started!
+    @table_transfer.update_attributes!(created_at: Time.now)
+
     # Prepare the DB iterator
     data_iterator.prepare!
     aws_redshift.execute(@table_transfer.table.init_sql_script)
