@@ -4,4 +4,3 @@ log/**
 tmp/pids/*
 tmp/cache/*
 public/assets/**/*
-docker/**

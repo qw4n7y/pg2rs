@@ -9,13 +9,18 @@ class Import::DoTransfer
   #  Performing the data flow
   #
   def perform
-    log "Transfer started"
+    log "Starting"
+    @transfer.started!
 
-    log "Uploading data from Postgres to AWS S3"
-    aws_s3_object_keys = []
+    log "Preparing"
+    prepare
+
+    log "Running"
     @transfer.table_transfers.each do |table_transfer|
+      Import::DoTableTransfer.new(table_transfer: table_transfer).perform
       begin
-        aws_s3_object_keys += Import::DumpTableAndUploadToS3.new(table_transfer: table_transfer).perform
+
+
         table_transfer.finished!
       rescue Exception => e
         table_transfer.failed!
@@ -23,23 +28,13 @@ class Import::DoTransfer
       end
     end
 
-    log "Creating manifest.json file in AWS S3"
-    manifest_file_content = {
-      entries: aws_s3_object_keys.map do |aws_s3_object_key|
-        {
-          url: "s3://#{@transfer.import.s3['bucket']}/#{aws_s3_object_key}",
-          mandatory: true
-        }
-      end
-    }.to_json
-    manifest_file_s3_object_key = "#{Import::Utility.aws_object_prefix_for(transfer: @transfer)}/manifest.json"
-    aws_s3.create_object_from_string(s3_object_key: manifest_file_s3_object_key, content: manifest_file_content)
+    log "Cleaning up"
+    cleanup
 
-    log "Copying data from AWS S3 to Redshift"
-    # TODO
-
+    log "Finishing"
     @transfer.update_attributes!(status: 'finished', finished_at: Time.now)
-    log "Transfer finished"
+
+    log "OK"
 
   rescue Exception => e
     log "#{e.class}: #{e.message}"
@@ -50,11 +45,21 @@ class Import::DoTransfer
   private
 
   def log(message)
-    @transfer.append_log(message)
+    @transfer.append_log("[Transfer] #{message}")
   end
 
-  def aws_s3
-    @aws_s3 ||= Connections::AwsS3.new(options: @transfer.import.s3)
+  def prepare
+    # Creating local FS working dir
+    local_base_dir = Import::Utility.local_base_dir_for(transfer: @transfer)
+    ok = system("mkdir -p #{local_base_dir}")
+    raise "#{self.class}: #{local_base_dir} dir could not be created" unless ok
+  end
+
+  def cleanup
+    # Removing local FS working dir
+    local_base_dir = Import::Utility.local_base_dir_for(transfer: @transfer)
+    ok = system("rm -rf #{local_base_dir}")
+    raise "#{self.class}: #{local_base_dir} dir could not be removed" unless ok
   end
 
 end

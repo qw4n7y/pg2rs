@@ -25,3 +25,4 @@
 *.keep
 /docker/db/data
 /docker/vault/**
+.notes

@@ -5,6 +5,7 @@ RUN apt-get update && apt-get install -y logrotate nodejs postgresql-client imag
 
 ENV RAILS_ENV production
 ENV PASSENGER_APP_ENV production
+ENV SECRET_KEY_BASE baa20e53d3901bc1f2d82754f5496bee81f08ef5b63a957f8d45d6ae3b9f64e83e7dc0e396ce8642f5e29b5d3233d32c50fb4b711ea46a52ff3d904990c17KOHPHANGHANISAWESOME
 
 # Install gems (Ruby2.3)
 WORKDIR /tmp

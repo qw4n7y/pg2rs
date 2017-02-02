@@ -2,5 +2,5 @@
 
 # PRODUCTION
 
-docker build -t onthespot/wifimap-pg2rs:latest -f docker/app/passenger/Dockerfile.production .
+docker build -t onthespot/wifimap-pg2rs:latest -f docker/app/Dockerfile.production .
 docker push onthespot/wifimap-pg2rs:latest

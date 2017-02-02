@@ -1,4 +1,0 @@
-ALTER USER username WITH SUPERUSER;
-ALTER USER username WITH NOSUPERUSER;
-
-docker-compose run --service-ports db postgres

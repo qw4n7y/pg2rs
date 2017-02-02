@@ -1,8 +1,7 @@
-
 db:
   image: 'postgres:9.5'
   volumes:
-    - /var/pg2rs/pgdata:/var/lib/postgresql/data
+    - /var/pg2rs/production/pgdata:/var/lib/postgresql/data
 
 web:
   ports:
@@ -17,14 +16,18 @@ web:
     - redis
 
 redis:
-
+  image: redis
+  tags:
+    - wifimap-utility
+  target_num_containers: 1
 
 sidekiq:
   image: 'onthespot/wifimap-pg2rs:latest'
-  command: /bin/sh -c "/sbin/my_init & bundle exec sidekiq"
+  command: bundle exec sidekiq
   target_num_containers: 1
   restart: always
   links:
+    - db
     - redis
   tags:
     - wifimap-utility
