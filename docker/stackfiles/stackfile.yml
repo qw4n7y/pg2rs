@@ -26,7 +26,7 @@ redis:
 
 sidekiq:
   image: 'onthespot/wifimap-pg2rs:latest'
-  command: bundle exec sidekiq
+  command: bundle exec sidekiq -C config/sidekiq.yml
   target_num_containers: 1
   restart: always
   links:

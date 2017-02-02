@@ -19,6 +19,6 @@
 
 # Learn more: http://github.com/javan/whenever
 
-every 3.day, at: '4:30am' do
-  runner 'ImportStarterJob.perform_later'
-end
+# every 3.day, at: '4:30am' do
+#   runner 'ImportsStarterJob.perform_later'
+# end

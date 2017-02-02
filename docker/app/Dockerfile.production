@@ -39,6 +39,7 @@ RUN bundle exec rake assets:precompile
 
 RUN mkdir -p log
 RUN mkdir -p tmp
+RUN mkdir -p tmp/pids
 RUN chown -R app:app *
 
 # Start Nginx / Passenger

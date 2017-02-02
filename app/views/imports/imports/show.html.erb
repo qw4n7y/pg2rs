@@ -10,7 +10,18 @@
 </h2>
 <hr/>
 
-<h3>Transfers</h3>
+<div class='row'>
+  <div class='col-md-8'>
+    <h3>Transfers</h3>
+  </div>
+  <div class="col-md-4">
+    <%= button_to imports_import_imports_transfers_path(@imports_import), method: :post, class: 'pull-right btn btn-default btn-success' do %>
+      <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+      &nbsp;Start transfer
+    <% end %>
+  </div>
+</div>
+
 <table class='table'>
   <thead>
     <tr>
@@ -22,7 +33,7 @@
   </thead>
 
   <tbody>
-    <% @imports_import.transfers.each do |transfer| %>
+    <% @imports_import.transfers.order(id: :desc).each do |transfer| %>
       <tr class="<%= bootstrap_row_class_for_status transfer.status %>">
         <td><%= transfer.created_at %></td>
         <td><%= transfer.finished_at %></td>

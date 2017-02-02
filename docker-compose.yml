@@ -33,7 +33,7 @@ services:
     build:
       context: .
       dockerfile: docker/app/Dockerfile.development
-    command: 'bundle exec sidekiq'
+    command: 'bundle exec sidekiq -C config/sidekiq.yml'
     volumes:
       - .:/home/app/pg2rs
     links:
