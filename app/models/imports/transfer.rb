@@ -1,5 +1,5 @@
 class Imports::Transfer < ApplicationRecord
-  enum status: {pending: 0, started: 10, finished: 20, failed: 30}
+  include StatusAwareConcern
 
   belongs_to :import, class_name: 'Imports::Import'
   has_many :table_transfers, class_name: 'Imports::TableTransfer', dependent: :destroy

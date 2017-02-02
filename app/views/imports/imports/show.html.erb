@@ -23,7 +23,7 @@
 
   <tbody>
     <% @imports_import.transfers.each do |transfer| %>
-      <tr>
+      <tr class="<%= bootstrap_row_class_for_status transfer.status %>">
         <td><%= transfer.created_at %></td>
         <td><%= transfer.finished_at %></td>
         <td><%= transfer.status %></td>

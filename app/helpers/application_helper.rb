@@ -19,4 +19,14 @@ module ApplicationHelper
     html.html_safe
   end
 
+  def bootstrap_row_class_for_status(status)
+    case status
+      when 'pending' then 'active'
+      when 'started' then 'info'
+      when 'finished' then 'success'
+      when 'failed' then 'danger'
+      else 'warning'
+    end
+  end
+
 end

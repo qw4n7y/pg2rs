@@ -36,7 +36,7 @@
 
   <tbody>
     <% @transfer.table_transfers.each do |table_transfer| %>
-      <tr>
+      <tr class="<%= bootstrap_row_class_for_status table_transfer.status %>">
         <td><%= table_transfer.table.name %></td>
         <td><%= table_transfer.created_at %></td>
         <td><%= table_transfer.finished_at %></td>

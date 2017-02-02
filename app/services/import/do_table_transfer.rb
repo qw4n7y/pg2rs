@@ -79,6 +79,7 @@ CSV MANIFEST GZIP DELIMITER ',';})
     log "Cleaning up"
     data_iterator.cleanup!
 
+    @table_transfer.update_attributes!(finished_at: Time.now)
     @table_transfer.finished!
 
     return aws_s3_object_keys

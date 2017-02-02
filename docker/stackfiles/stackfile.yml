@@ -2,13 +2,15 @@ db:
   image: 'postgres:9.5'
   volumes:
     - /var/pg2rs/production/pgdata:/var/lib/postgresql/data
+  tags:
+    - wifimap-utility
 
 web:
   ports:
     - '80:80'
   image: 'onthespot/wifimap-pg2rs:latest'
   restart: always
-  command: /bin/sh -c "/sbin/my_init & bundle exec whenever --update-crontab pg2rs --set 'environment=production'"
+  command: /bin/sh -c "bundle exec whenever --update-crontab pg2rs --set 'environment=production' && /sbin/my_init"
   tags:
     - wifimap-utility
   target_num_containers: 1
