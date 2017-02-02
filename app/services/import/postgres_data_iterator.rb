@@ -17,6 +17,14 @@ class Import::PostgresDataIterator
     @prepared = true
   end
 
+  # Returns is the any data or not
+  #
+  def any?
+    raise "#{self.class}: instance not prepared before doing any move" unless @prepared
+
+    @total_rows_number > 0
+  end
+
   # Fetch the data and process it row by row
   #
   def each_row_for_next_chunk

@@ -20,6 +20,12 @@ class Import::DoTableTransfer
     data_iterator.prepare!
     aws_redshift.execute(@table_transfer.table.init_sql_script)
 
+    unless data_iterator.any?
+      log 'No data since last transfer'
+      clean_up_and_finish
+      return []
+    end
+
     chunk_number = 1
     while !data_iterator.finished?
       local_file_name = Import::Utility.local_file_name_for(table_transfer: @table_transfer, chunk_number: chunk_number)
@@ -78,12 +84,7 @@ CSV MANIFEST GZIP DELIMITER ',';})
     aws_redshift.execute("VACUUM;")
     aws_redshift.execute("ANALYZE;")
 
-    log "Cleaning up"
-    data_iterator.cleanup!
-
-    @table_transfer.update_attributes!(finished_at: Time.now)
-    @table_transfer.finished!
-
+    clean_up_and_finish
     return aws_s3_object_keys
   rescue Exception => e
     @table_transfer.failed!
@@ -125,6 +126,14 @@ CSV MANIFEST GZIP DELIMITER ',';})
            where('created_at < ?', @table_transfer.created_at).
            order('created_at DESC').first
     end
+  end
+
+  def clean_up_and_finish
+    log "Cleaning up"
+    data_iterator.cleanup!
+
+    @table_transfer.update_attributes!(finished_at: Time.now)
+    @table_transfer.finished!
   end
 
 end
