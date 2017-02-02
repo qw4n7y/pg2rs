@@ -16,6 +16,7 @@ class Import::DoTableTransfer
     @table_transfer.started!
     # Prepare the DB iterator
     data_iterator.prepare!
+    aws_redshift.execute(@table_transfer.table.init_sql_script)
 
     chunk_number = 1
     while !data_iterator.finished?

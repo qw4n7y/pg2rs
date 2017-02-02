@@ -71,7 +71,7 @@ class Imports::ImportsController < ApplicationController
     def imports_import_params
       attrs = params.require(:imports_import).permit(
                 :title, :redshift, :postgres, :s3, :status, :private_ssh_key_to_postgres_server,
-                tables_attributes: [:id, :name, :strategy, :_destroy])
+                tables_attributes: [:id, :name, :strategy, :init_sql_script, :_destroy])
 
       attrs[:redshift] = JSON.parse(attrs[:redshift] || '{}')
       attrs[:postgres] = JSON.parse(attrs[:postgres] || '{}')

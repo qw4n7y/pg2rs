@@ -64,3 +64,4 @@ gem 'will_paginate', '~> 3.1.0'
 gem 'sidekiq'
 gem 'net-ssh'
 gem 'aws-sdk', '~> 2'
+gem 'whenever', :require => false

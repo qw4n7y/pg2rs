@@ -8,6 +8,7 @@ web:
     - '80:80'
   image: 'onthespot/wifimap-pg2rs:latest'
   restart: always
+  command: /bin/sh -c "/sbin/my_init & bundle exec whenever --update-crontab pg2rs --set 'environment=production'"
   tags:
     - wifimap-utility
   target_num_containers: 1
