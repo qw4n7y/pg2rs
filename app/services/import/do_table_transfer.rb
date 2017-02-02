@@ -47,9 +47,9 @@ class Import::DoTableTransfer
       raise "#{self.class}: #{local_file_name} could not be removed" unless success
 
       aws_s3_object_keys << aws_s3_object_key
-      chunk_number += 1
 
       log "[Chunk #{chunk_number}] OK"
+      chunk_number += 1
     end
 
     # Creating table manifest json in AWS S3
@@ -69,10 +69,9 @@ class Import::DoTableTransfer
     log "Copying data to AWS Redshift"
     aws_redshift.execute(
 %Q{COPY #{@table_transfer.table.name}
-FROM '#{manifest_file_s3_object_key}'
+FROM 's3://#{@table_transfer.transfer.import.s3['bucket']}/#{manifest_file_s3_object_key}'
 CREDENTIALS 'aws_access_key_id=#{@table_transfer.transfer.import.s3['access_key_id']};aws_secret_access_key=#{@table_transfer.transfer.import.s3['secret_access_key']}'
-MANIFEST
-GZIP;})
+CSV MANIFEST GZIP DELIMITER ',';})
     aws_redshift.execute("VACUUM;")
     aws_redshift.execute("ANALYZE;")
 
