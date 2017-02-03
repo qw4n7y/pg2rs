@@ -81,7 +81,7 @@ class Import::DoTableTransfer
 %Q{COPY #{@table_transfer.table.name}
 FROM 's3://#{@table_transfer.transfer.import.s3['bucket']}/#{manifest_file_s3_object_key}'
 CREDENTIALS 'aws_access_key_id=#{@table_transfer.transfer.import.s3['access_key_id']};aws_secret_access_key=#{@table_transfer.transfer.import.s3['secret_access_key']}'
-CSV MANIFEST GZIP DELIMITER ',' ACCEPTINVCHARS AS '?' TRUNCATECOLUMNS;})
+CSV MANIFEST GZIP DELIMITER ',' ACCEPTINVCHARS AS '?' TRUNCATECOLUMNS MAXERROR 100;})
     aws_redshift.execute("VACUUM;")
     aws_redshift.execute("ANALYZE;")
 
