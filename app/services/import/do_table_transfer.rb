@@ -36,6 +36,7 @@ class Import::DoTableTransfer
       log "[Chunk #{chunk_number}] Dumping CSV data from Postgres to #{local_file_name}"
       file = open(local_file_name, 'wb+')
       data_iterator.each_row_for_next_chunk do |row|
+        row = row.to_s.force_encoding('iso-8859-1').encode('utf-8')
         file << row
       end
       file.close
