@@ -13,6 +13,7 @@ class Import::DoTableTransfer
     aws_s3_object_keys = []
 
     log "Preparing"
+    @table_transfer.transfer.reload
     @table_transfer.started!
     @table_transfer.update_attributes!(created_at: Time.now)
 

@@ -26,26 +26,22 @@
 <table class='table'>
   <thead>
     <tr>
+      <th>#</th>
       <th>Table</th>
       <th>Started at</th>
       <th>Finished at</th>
       <th>Status</th>
-      <th>Actions</th>
     </tr>
   </thead>
 
   <tbody>
     <% @transfer.table_transfers.each do |table_transfer| %>
       <tr class="<%= bootstrap_row_class_for_status table_transfer.status %>">
+        <td><%= table_transfer.id %></td>
         <td><%= table_transfer.table.name %></td>
         <td><%= table_transfer.created_at %></td>
         <td><%= table_transfer.finished_at %></td>
         <td><%= table_transfer.status %></td>
-        <td>
-          <%= link_to '#', class: 'btn btn-xs btn-default' do %>
-            <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>
-          <% end %>
-        </td>
       </tr>
     <% end %>
   </tbody>

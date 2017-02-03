@@ -25,6 +25,7 @@
 <table class='table'>
   <thead>
     <tr>
+      <td>#</td>
       <th>Started at</th>
       <th>Finished at</th>
       <th>Status</th>
@@ -35,12 +36,19 @@
   <tbody>
     <% @imports_import.transfers.order(id: :desc).each do |transfer| %>
       <tr class="<%= bootstrap_row_class_for_status transfer.status %>">
+        <td><%= transfer.id %></td>
         <td><%= transfer.created_at %></td>
         <td><%= transfer.finished_at %></td>
         <td><%= transfer.status %></td>
         <td>
           <%= link_to [@imports_import, transfer], class: 'btn btn-xs btn-default' do %>
             <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>
+          <% end %>
+
+          <% if transfer.failed? %>
+            <%= link_to [@imports_import, transfer], method: :put, class: 'btn btn-xs btn-default btn-success' do %>
+              <span class="glyphicon glyphicon-refresh" aria-hidden="true"></span>
+            <% end %>
           <% end %>
         </td>
       </tr>

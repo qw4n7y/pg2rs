@@ -1,11 +1,11 @@
 class Import::Utility
 
   def self.local_base_dir_for(transfer:)
-    "/tmp/pg2rs/database-#{transfer.import.postgres['name']}/transfer-#{transfer.created_at.utc.iso8601}"
+    "/tmp/pg2rs/database-#{transfer.import.postgres['name']}/transfer-#{transfer.id}"
   end
 
   def self.aws_object_prefix_for(transfer:)
-    "database-#{transfer.import.postgres['name']}/transfer-#{transfer.created_at.utc.iso8601}"
+    "database-#{transfer.import.postgres['name']}/transfer-#{transfer.id}"
   end
 
   # Generates a file name for data part

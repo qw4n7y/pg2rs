@@ -6,7 +6,7 @@ class Imports::TableTransfer < ApplicationRecord
 
   validates :transfer, presence: true
   validates :table, presence: true
-  
+
   after_commit :update_transfer_status, on: :update
 
   private

@@ -17,7 +17,7 @@ class Import::DoTransfer
     prepare
 
     log "Running"
-    @transfer.table_transfers.each do |table_transfer|
+    @transfer.table_transfers.pending.each do |table_transfer|
       Import::DoTableTransfer.new(table_transfer: table_transfer).perform
       begin
 
@@ -33,7 +33,8 @@ class Import::DoTransfer
     cleanup
 
     log "Finishing"
-    @transfer.update_attributes!(status: 'finished', finished_at: Time.now)
+    @transfer.update_attributes!(finished_at: Time.now)
+    @transfer.finished! unless @transfer.table_transfers.any?(&:failed?)
 
     log "OK"
 

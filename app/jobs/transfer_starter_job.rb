@@ -1,5 +1,5 @@
 class TransferStarterJob < ApplicationJob
-  def perform(import)
-    Import::ServiceIgnitor.new(import: import).do_transfer_if_scheduled
+  def perform(transfer)
+    Import::DoTransfer.new(transfer: transfer).perform
   end
 end
