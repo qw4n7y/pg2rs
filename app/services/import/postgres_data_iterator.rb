@@ -37,12 +37,18 @@ class Import::PostgresDataIterator
     end
 
     @iteration_number += 1
+    check_if_finished
+  end
+
+  def check_if_finished
     @finished = true if @iteration_number*Import::CHUNK_ROWS_COUNT > @total_rows_number
+    @finished = true if !any?
   end
 
   # Cleanup: droping temporary tables (DATA LOSS!)
   #
   def cleanup!
+    check_if_finished
     raise "#{self.class}: instance not prepared before doing any move" unless @prepared
     raise "#{self.class}: not all data was iterated over" unless @finished
 
