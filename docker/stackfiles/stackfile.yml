@@ -3,16 +3,16 @@ db:
   volumes:
     - /var/pg2rs/production/pgdata:/var/lib/postgresql/data
   tags:
-    - wifimap-utility
+    - utility
 
 web:
   ports:
     - '80:80'
-  image: 'onthespot/wifimap-pg2rs:latest'
+  image: 'wifimap/pg2rs:latest'
   restart: always
   command: /bin/sh -c "bundle exec whenever --update-crontab pg2rs --set 'environment=production' && /sbin/my_init"
   tags:
-    - wifimap-utility
+    - utility
   target_num_containers: 1
   links:
     - db
@@ -21,11 +21,11 @@ web:
 redis:
   image: redis
   tags:
-    - wifimap-utility
+    - utility
   target_num_containers: 1
 
 sidekiq:
-  image: 'onthespot/wifimap-pg2rs:latest'
+  image: 'wifimap/pg2rs:latest'
   command: bundle exec sidekiq -C config/sidekiq.yml
   target_num_containers: 1
   restart: always
@@ -33,4 +33,4 @@ sidekiq:
     - db
     - redis
   tags:
-    - wifimap-utility
+    - utility
