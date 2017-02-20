@@ -75,15 +75,27 @@ class Import::DoTableTransfer
     manifest_file_s3_object_key = "#{Import::Utility.aws_object_prefix_for(transfer: @table_transfer.transfer)}/#{@table_transfer.table.name}.json"
     aws_s3.create_object_from_string(s3_object_key: manifest_file_s3_object_key, content: manifest_file_content)
 
-    # Copying data to AWS Redshift
+    # Copying data to AWS Redshift:
+    # Creating a temporary table, loading all the data there,
+    # merging tables (removing all the duplicates, copying the data), removing temporary table
+    #
     log "Copying data to AWS Redshift"
-    aws_redshift.execute(
-%Q{COPY #{@table_transfer.table.name}
-FROM 's3://#{@table_transfer.transfer.import.s3['bucket']}/#{manifest_file_s3_object_key}'
-CREDENTIALS 'aws_access_key_id=#{@table_transfer.transfer.import.s3['access_key_id']};aws_secret_access_key=#{@table_transfer.transfer.import.s3['secret_access_key']}'
-CSV MANIFEST GZIP DELIMITER ',' ACCEPTINVCHARS AS '?' TRUNCATECOLUMNS MAXERROR 100;})
-    aws_redshift.execute("VACUUM;")
-    aws_redshift.execute("ANALYZE;")
+    table_name = @table_transfer.table.name
+    aws_redshift.tap do |rs|
+      rs.execute("DROP TABLE IF EXISTS ##{table_name};")
+      rs.execute("CREATE TABLE ##{table_name} (LIKE #{table_name} INCLUDING DEFAULTS);")
+      rs.execute(%Q{COPY ##{table_name}
+                    FROM 's3://#{@table_transfer.transfer.import.s3['bucket']}/#{manifest_file_s3_object_key}'
+                    CREDENTIALS 'aws_access_key_id=#{@table_transfer.transfer.import.s3['access_key_id']};aws_secret_access_key=#{@table_transfer.transfer.import.s3['secret_access_key']}'
+                    CSV MANIFEST GZIP DELIMITER ',' ACCEPTINVCHARS AS '?' TRUNCATECOLUMNS MAXERROR 100;}.gsub(/[ ]{2,}/, ' '))
+      rs.execute(%Q{BEGIN TRANSACTION;
+                      DELETE FROM #{table_name} USING ##{table_name} WHERE #{table_name}.id = ##{table_name}.id;
+                      INSERT INTO #{table_name} SELECT * FROM ##{table_name};
+                    END TRANSACTION;}.gsub(/[ ]{2,}/, ' '))
+      rs.execute("DROP TABLE ##{table_name};")
+      rs.execute("VACUUM;")
+      rs.execute("ANALYZE;")
+    end
 
     clean_up_and_finish
     return aws_s3_object_keys

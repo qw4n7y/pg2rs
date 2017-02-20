@@ -107,7 +107,13 @@ class Import::PostgresDataIterator
       when 'incremental'
         sql = '(1 = 1)'
         if @date_interval
-          sql = "(created_at >= '#{@date_interval.first}' AND created_at < '#{@date_interval.last}')"
+          sql  = %Q{
+            (
+              (created_at >= '#{@date_interval.first}' AND created_at < '#{@date_interval.last}')
+              OR
+              (updated_at >= '#{@date_interval.first}' AND updated_at < '#{@date_interval.last}')
+            )
+          }.gsub(/[ ]{2,}/, ' ')
         end
         sql
 
