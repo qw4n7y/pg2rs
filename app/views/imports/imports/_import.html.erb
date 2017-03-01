@@ -3,7 +3,7 @@
   <td><%= import.status %></td>
   <td><%= import.tables.count %> tables</td>
 
-  <% if transfer = import.transfers.first %>
+  <% if transfer = import.transfers.order(id: :desc).first %>
     <td class='<%= bootstrap_row_class_for_status transfer.status %>'>
         <%= transfer.created_at %> / <%= transfer.status %>
     </td>
