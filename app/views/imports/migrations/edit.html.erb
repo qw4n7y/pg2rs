@@ -1,0 +1,15 @@
+<%= render partial: 'imports/imports/header', locals: {import: @import} %>
+
+<h2>
+  Editing Migration
+
+  <%= link_to imports_import_migration_path(@import, @migration), class: 'pull-right btn btn-default' do %>
+    <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>
+  <% end %>
+  <%= link_to [@import, :migrations], class: 'pull-right btn btn-default' do %>
+    <span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span>
+  <% end %>
+</h2>
+<hr/>
+
+<%= render 'form', migration: @migration %>

@@ -1,0 +1,30 @@
+<%= render partial: 'imports/imports/header', locals: {import: @import} %>
+
+<div class='row'>
+  <div class='col-md-8'>
+    <h3>Migrations</h3>
+  </div>
+  <div class="col-md-4">
+    <%= link_to [:new, @import, :migration], class: 'pull-right btn btn-default btn-success' do %>
+      <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+      &nbsp;New Migration
+    <% end %>
+  </div>
+</div>
+
+<table class='table'>
+  <thead>
+    <tr>
+      <th>#</th>
+      <th>SQL</th>
+      <th>Status</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <%= render @migrations, as: :migration %>
+  </tbody>
+</table>
+
+<br>

@@ -15,5 +15,8 @@ Rails.application.routes.draw do
 
   resources :imports, module: 'imports', as: :imports_imports do
     resources :transfers, as: :imports_transfers
+    resources :migrations, as: :migrations do
+      post :start, on: :member
+    end
   end
 end

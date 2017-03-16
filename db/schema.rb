@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170202073506) do
+ActiveRecord::Schema.define(version: 20170316074311) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -23,6 +23,16 @@ ActiveRecord::Schema.define(version: 20170202073506) do
     t.integer  "status",     default: 0,    null: false
     t.datetime "created_at",                null: false
     t.datetime "updated_at",                null: false
+  end
+
+  create_table "imports_migrations", force: :cascade do |t|
+    t.integer  "import_id",  null: false
+    t.text     "sql"
+    t.text     "log"
+    t.integer  "status",     null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["import_id"], name: "index_imports_migrations_on_import_id", using: :btree
   end
 
   create_table "imports_table_transfers", force: :cascade do |t|

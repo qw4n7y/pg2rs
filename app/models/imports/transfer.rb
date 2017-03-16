@@ -1,5 +1,6 @@
 class Imports::Transfer < ApplicationRecord
   include StatusAwareConcern
+  include LoggableConcern
 
   belongs_to :import, class_name: 'Imports::Import'
   has_many :table_transfers, class_name: 'Imports::TableTransfer', dependent: :destroy
@@ -14,13 +15,5 @@ class Imports::Transfer < ApplicationRecord
     # self.status = 'finished' if table_transfers.all? { |tt| tt.finished? }
 
     save!
-  end
-
-  def append_log(message)
-    ActiveRecord::Base.connection.execute(%Q{
-      UPDATE #{Imports::Transfer.table_name}
-      SET log = COALESCE(log, '') || E#{ActiveRecord::Base.sanitize("[#{Time.now}] #{message}\n")}
-      WHERE id = #{id}
-    })
   end
 end

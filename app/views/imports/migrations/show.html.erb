@@ -1,0 +1,18 @@
+<%= render partial: 'imports/imports/header', locals: {import: @import} %>
+
+<h2>
+  Migration
+
+  <%= link_to [@import, :migrations], class: 'pull-right btn btn-default' do %>
+    <span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span>
+  <% end %>
+</h2>
+<hr/>
+
+<p>
+  <pre><%= raw @migration.sql %></pre>
+</p>
+
+<p>
+  <pre><%= raw @migration.log %></pre>
+</p>

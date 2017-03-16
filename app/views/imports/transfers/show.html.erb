@@ -1,11 +1,4 @@
-<h2>
-  Import <%= @imports_import.title %>
-
-  <%= link_to @imports_import, class: 'pull-right btn btn-default' do %>
-    <span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span>
-  <% end %>
-</h2>
-<hr/>
+<%= render partial: 'imports/imports/header', locals: {import: @imports_import} %>
 
 <table class='table'>
   <tr>

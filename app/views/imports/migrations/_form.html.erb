@@ -1,0 +1,13 @@
+<% url = migration.new_record? ? imports_import_migrations_path(migration.import) : imports_import_migration_path(migration.import, migration) %>
+
+<%= simple_form_for(migration, url: url) do |f| %>
+  <%= f.error_notification %>
+
+  <div class="form-inputs">
+    <%= f.input :sql %>
+  </div>
+
+  <div class="form-actions">
+    <%= f.button :submit %>
+  </div>
+<% end %>
