@@ -1,10 +1,11 @@
 class Import::PostgresDataIterator
 
-  def initialize(postgres_options:, table_name:, strategy:, date_interval:)
+  def initialize(postgres_options:, table_name:, strategy:, date_interval:, select_sql:)
     @postgres_options = postgres_options
     @table_name = table_name
     @strategy = strategy
     @date_interval = date_interval
+    @select_sql = select_sql
   end
 
   # Prepare the data to be consumed, calculating total number of scope
@@ -31,7 +32,8 @@ class Import::PostgresDataIterator
     return nil if finished?
     raise "#{self.class}: instance not prepared before running the iteration" unless @prepared
 
-    sql = "SELECT * FROM #{data_table_name} WHERE #{data_where_scope} ORDER BY id ASC LIMIT #{Import::CHUNK_ROWS_COUNT} OFFSET #{@iteration_number * Import::CHUNK_ROWS_COUNT}"
+    select_sql = @select_sql.present? ? @select_sql : '*'
+    sql = "SELECT #{select_sql} FROM #{data_table_name} WHERE #{data_where_scope} ORDER BY id ASC LIMIT #{Import::CHUNK_ROWS_COUNT} OFFSET #{@iteration_number * Import::CHUNK_ROWS_COUNT}"
     pg_result = postgres.copy("COPY (#{sql}) TO STDOUT WITH CSV DELIMITER ','") do |row|
       yield row
     end

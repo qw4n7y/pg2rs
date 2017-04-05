@@ -2,6 +2,7 @@
   <%= f.input :name %>
   <%= f.input :strategy, collection: Imports::Table.strategies.keys %>
   <%= f.input :init_sql_script %>
+  <%= f.input :select_sql %>
   <%= link_to_remove_association f, class: 'btn btn-default' do %>
     <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
   <% end %>

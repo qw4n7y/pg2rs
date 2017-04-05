@@ -128,7 +128,8 @@ class Import::DoTableTransfer
                         postgres_options: @table_transfer.transfer.import.postgres,
                         table_name: @table_transfer.table.name,
                         strategy: @table_transfer.table.strategy,
-                        date_interval: date_interval
+                        date_interval: date_interval,
+                        select_sql: @table_transfer.table.select_sql
                       })
   end
 
