@@ -4,6 +4,7 @@ class Imports::Import < ApplicationRecord
   has_many :tables, class_name: 'Imports::Table', inverse_of: :import
   has_many :transfers, class_name: 'Imports::Transfer', inverse_of: :import
   has_many :migrations, class_name: 'Imports::Migration', inverse_of: :import
+  has_many :exports, inverse_of: :import
 
   validates :title, presence: true
   validates :status, presence: true, inclusion: { in: Imports::Import.statuses.keys }

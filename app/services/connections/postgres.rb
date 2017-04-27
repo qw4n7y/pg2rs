@@ -1,4 +1,5 @@
 class Connections::Postgres
+  attr_accessor :pg
 
   def initialize(options:)
     @options = options

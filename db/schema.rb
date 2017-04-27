@@ -10,19 +10,30 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170405150824) do
+ActiveRecord::Schema.define(version: 20170427163949) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
+  create_table "exports", force: :cascade do |t|
+    t.integer  "import_id"
+    t.integer  "status",      null: false
+    t.text     "log"
+    t.datetime "finished_at"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+    t.index ["import_id"], name: "index_exports_on_import_id", using: :btree
+  end
+
   create_table "imports_imports", force: :cascade do |t|
     t.string   "title"
-    t.json     "s3",         default: "{}", null: false
-    t.json     "postgres",   default: "{}", null: false
-    t.json     "redshift",   default: "{}", null: false
-    t.integer  "status",     default: 0,    null: false
-    t.datetime "created_at",                null: false
-    t.datetime "updated_at",                null: false
+    t.json     "s3",                    default: "{}", null: false
+    t.json     "postgres",              default: "{}", null: false
+    t.json     "redshift",              default: "{}", null: false
+    t.integer  "status",                default: 0,    null: false
+    t.datetime "created_at",                           null: false
+    t.datetime "updated_at",                           null: false
+    t.json     "postgres_to_export_to", default: "{}", null: false
   end
 
   create_table "imports_migrations", force: :cascade do |t|
@@ -65,6 +76,17 @@ ActiveRecord::Schema.define(version: 20170405150824) do
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
     t.index ["import_id"], name: "index_imports_transfers_on_import_id", using: :btree
+  end
+
+  create_table "table_exports", force: :cascade do |t|
+    t.integer  "export_id",   null: false
+    t.integer  "table_id",    null: false
+    t.integer  "status",      null: false
+    t.datetime "finished_at"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+    t.index ["export_id"], name: "index_table_exports_on_export_id", using: :btree
+    t.index ["table_id"], name: "index_table_exports_on_table_id", using: :btree
   end
 
   create_table "users_users", force: :cascade do |t|

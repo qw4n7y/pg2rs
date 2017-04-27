@@ -18,5 +18,8 @@ Rails.application.routes.draw do
     resources :migrations, as: :migrations do
       post :start, on: :member
     end
+    resources :exports, as: :exports do
+      post :start, on: :member
+    end
   end
 end

@@ -1,0 +1,54 @@
+<%= render partial: 'imports/imports/header', locals: {import: @import} %>
+
+<h2>
+  Export
+
+  <%= link_to [@import, :exports], class: 'pull-right btn btn-default' do %>
+    <span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span>
+  <% end %>
+</h2>
+<hr/>
+
+<table class='table'>
+  <tr>
+    <td>Started at</td>
+    <td><%= @export.created_at %></td>
+  </tr>
+  <tr>
+    <td>Finished at</td>
+    <td><%= @export.finished_at %></td>
+  </tr>
+  <tr>
+    <td>Status</td>
+    <td><%= @export.status %></td>
+  </tr>
+</table>
+
+<h3>Table exports</h3>
+<table class='table'>
+  <thead>
+    <tr>
+      <th>#</th>
+      <th>Table</th>
+      <th>Started at</th>
+      <th>Finished at</th>
+      <th>Status</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @export.table_exports.order(id: :asc).each do |table_export| %>
+      <tr class="<%= bootstrap_row_class_for_status table_export.status %>">
+        <td><%= table_export.id %></td>
+        <td><%= table_export.table.name %></td>
+        <td><%= table_export.created_at %></td>
+        <td><%= table_export.finished_at %></td>
+        <td><%= table_export.status %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<p>
+  <pre><%= raw @export.log %></pre>
+</p>

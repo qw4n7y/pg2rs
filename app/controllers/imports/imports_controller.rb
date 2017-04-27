@@ -70,11 +70,13 @@ class Imports::ImportsController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def imports_import_params
       attrs = params.require(:imports_import).permit(
-                :title, :redshift, :postgres, :s3, :status, :private_ssh_key_to_postgres_server,
+                :title, :redshift, :postgres, :postgres_to_export_to, :s3, :status,
+                :private_ssh_key_to_postgres_server,
                 tables_attributes: [:id, :name, :strategy, :init_sql_script, :select_sql, :_destroy])
 
       attrs[:redshift] = JSON.parse(attrs[:redshift] || '{}')
       attrs[:postgres] = JSON.parse(attrs[:postgres] || '{}')
+      attrs[:postgres_to_export_to] = JSON.parse(attrs[:postgres_to_export_to] || '{}')
       attrs[:s3] = JSON.parse(attrs[:s3] || '{}')
 
       attrs

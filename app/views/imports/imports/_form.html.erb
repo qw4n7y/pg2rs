@@ -3,7 +3,10 @@
 
   <div class="form-inputs">
     <%= f.input :title %>
+
     <%= f.input :postgres, as: :text, input_html: {value: JSON.generate(f.object.postgres)}, hint: 'e.g {"host": "127.0.0.1", "user": "postgres", "password":"superpass123", "name":"my_db", "port": 5432}' %>
+    <%= f.input :postgres_to_export_to, as: :text, input_html: {value: JSON.generate(f.object.postgres_to_export_to)}, hint: 'e.g {"host": "127.0.0.1", "user": "postgres", "password":"superpass123", "name":"my_db", "port": 5432}' %>
+
     <%= f.input :s3, as: :text, input_html: {value: JSON.generate(f.object.s3)}, hint: 'e.g {"access_key_id": "123456", "secret_access_key": "ZXCVBN", "bucket": "my-bucket-name", "region": "us-east-1"}' %>
     <%= f.input :redshift, as: :text, input_html: {value: JSON.generate(f.object.redshift)}, hint: 'e.g {}' %>
     <%= f.input :status, collection: Imports::Import.statuses.keys %>

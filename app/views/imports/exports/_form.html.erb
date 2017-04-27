@@ -1,0 +1,9 @@
+<% url = export.new_record? ? imports_import_exports_path(export.import) : imports_import_export_path(export.import, export) %>
+
+<%= simple_form_for(export, url: url) do |f| %>
+  <%= f.error_notification %>
+
+  <div class="form-actions">
+    <%= f.button :submit %>
+  </div>
+<% end %>
